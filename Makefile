@@ -1,4 +1,9 @@
-FILES = ./build/kernel.asm.o ./build/kernel.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o ./build/io/io.o
+HARDWARE_FILES = ./build/hardware/pic/pic.o ./build/hardware/port/port.o ./build/hardware/port/port.asm.o ./build/hardware/ps2/ps2.o
+IDT_FILES = ./build/idt/idt.o ./build/idt/idt.asm.o ./build/idt/int_handlers.asm.o ./build/idt/int_service_routines.o
+IO_FILES = ./build/io/vga/vga.o
+MEMORY_FILES = ./build/memory/memory.o
+
+FILES = $(HARDWARE_FILES) $(IDT_FILES) $(IO_FILES) $(MEMORY_FILES) ./build/kernel.o ./build/kernel.asm.o
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 

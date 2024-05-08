@@ -1,47 +1,7 @@
-#include "io/io.h"
-#include "kernel.h"
-
-static inline void io_wait(void)
-{
-    outb(0x80, 0);
-}
-
-void pic_remap(uint8_t master_offset, uint8_t slave_offset)
-{
-    uint8_t master_mask, slave_mask;
-
-    // Save the interrupt masks
-    master_mask = insb(PIC1_DATA);
-    slave_mask = insb(PIC2_DATA);
-
-    // Give the initialization command to the PICs
-    outb(PIC1_COMMAND, ICW1_INIT | ICW1_ICW4);
-    io_wait();
-    outb(PIC2_COMMAND, ICW1_INIT | ICW1_ICW4);
-    io_wait();
-    
-    // Give the vector offsets to the PICs
-    outb(PIC1_DATA, master_offset);
-    io_wait();
-    outb(PIC2_DATA, slave_offset);
-    io_wait();
-
-    // Tell the master and slave PICs how they are wired to each other
-    outb(PIC1_DATA, 0b00000100);  // Tell master PIC there is a slave at IRQ 2 (0000 0100)
-    io_wait();
-    outb(PIC2_DATA, 0b00000010);  // Tell slave PIC its cascade identity (0000 0010)
-    io_wait();
-
-    // Give additional information about the environment
-    outb(PIC1_DATA, ICW4_8086);  // Have the PICs use 8086 mode (not 8080)
-    io_wait();
-    outb(PIC2_DATA, ICW4_8086);
-    io_wait();
-
-    // Restore the interrupt masks
-    outb(PIC1_DATA, master_mask);
-    outb(PIC2_DATA, slave_mask);
-}
+#include <stdint.h>
+#include "hardware/port/port.h"
+#include "hardware/ps2/ps2.h"
+#include "io/vga/vga.h"
 
 void initialise_ps2()
 {

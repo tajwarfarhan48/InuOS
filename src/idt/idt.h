@@ -2,8 +2,9 @@
 #define IDT_H
 
 #include <stdint.h>
-#include "config.h"
 #include "memory/memory.h"
+
+#define NUM_INTERRUPTS 512
 
 struct gate_descriptor {
     uint16_t offset_1; // Bits 0 - 15 of the offset

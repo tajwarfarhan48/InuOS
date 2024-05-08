@@ -1,16 +1,27 @@
 #include "idt/idt.h"
-#include "config.h"
+#include "idt/int_handlers.h"
+#include "kernel.h"
 #include "memory/memory.h"
 
-struct gate_descriptor idt[KERNEL_NUM_INTERRUPTS];
+struct gate_descriptor idt[NUM_INTERRUPTS];
 struct idt_descriptor r_idt;
 
 void idt_init()
 {
-    memset(idt, 0, KERNEL_NUM_INTERRUPTS * sizeof(struct gate_descriptor));
-    r_idt.size = (KERNEL_NUM_INTERRUPTS * sizeof(struct gate_descriptor)) - 1;
+    int i;
+
+    memset(idt, 0, NUM_INTERRUPTS * sizeof(struct gate_descriptor));
+    r_idt.size = (NUM_INTERRUPTS * sizeof(struct gate_descriptor)) - 1;
     r_idt.offset = (uint32_t) idt;
+    
     idt_load(&r_idt);
+
+    for (i = 0; i < NUM_INTERRUPTS; i++)
+        add_idt_entry(i, no_int_handler);
+    
+    add_idt_entry(0, divide_by_zero_handler);
+    add_idt_entry(0x20, timer_handler);
+    add_idt_entry(0x21, keyboard_press_handler);
 }
 
 void add_idt_entry(int interrupt_no, void* address)

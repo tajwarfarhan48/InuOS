@@ -7,8 +7,6 @@ global insw
 global outb
 global outw
 
-extern print
-
 insb:
     push ebp
     mov ebp, esp
