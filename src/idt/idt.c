@@ -3,9 +3,12 @@
 #include "kernel.h"
 #include "memory/memory.h"
 
-struct gate_descriptor idt[NUM_INTERRUPTS];
+struct gate_descriptor idt[NUM_INTERRUPTS]; // Array of interrupt gates
 struct idt_descriptor r_idt;
 
+/*
+ * Initializes the Interrupt Descriptor Table (IDT)
+ */
 void idt_init()
 {
     int i;
@@ -16,6 +19,7 @@ void idt_init()
     
     idt_load(&r_idt);
 
+    // Adds a default handler for uninitialized interrupts
     for (i = 0; i < NUM_INTERRUPTS; i++)
         add_idt_entry(i, no_int_handler);
     
@@ -24,6 +28,13 @@ void idt_init()
     add_idt_entry(0x21, keyboard_press_handler);
 }
 
+/*
+ * Adds a gate to the IDT.
+ *
+ * Input:
+ *     - int interrupt_no: The IRQ number for the gate
+ *     - void* address: The address of the interrupt handler
+ */
 void add_idt_entry(int interrupt_no, void* address)
 {
     struct gate_descriptor* temp = idt;

@@ -7,6 +7,8 @@ DATA_SEG equ 0x10
 
 extern kernel_main
 
+; The start of the kernel. The bootloader hands control over to this
+; code after loading the kernel image at address 0x100000.
 _start:
     mov ax, DATA_SEG
     mov ds, ax
@@ -24,6 +26,6 @@ _start:
 
     call kernel_main 
 
-    sti ; Enable interrupts
+    sti ; Start interrupts after they were disabled in the bootloader.
 
-    jmp $
+    jmp $ ; Loop forever
