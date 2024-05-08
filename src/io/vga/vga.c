@@ -26,7 +26,7 @@ static void terminal_writechar( char c, char color ) {
     }
 }
 
-static void terminal_initialize() {
+void terminal_initialize() {
     size_t i, j;
     terminalPtr = ( uint16_t* ) 0xB8000;
 
@@ -39,4 +39,8 @@ static void terminal_initialize() {
 
 void print( char* s ) {
     while ( *s != '\0' ) terminal_writechar( *(s++), 15 );
+}
+
+void putc(char c) {
+    terminal_writechar(c, 15);
 }

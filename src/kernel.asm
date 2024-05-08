@@ -5,6 +5,8 @@ global _start
 CODE_SEG equ 0x08
 DATA_SEG equ 0x10
 
+extern kernel_main
+
 _start:
     mov ax, DATA_SEG
     mov ds, ax
@@ -25,5 +27,3 @@ _start:
     sti ; Enable interrupts
 
     jmp $
-
-times 512-($ - $$) db 0

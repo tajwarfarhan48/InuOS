@@ -20,6 +20,7 @@ void divide_by_zero_service_routine()
 
 void keyboard_press_service_routine()
 {   
+    char c;
     static uint8_t shiftIsActive = 0;      // state of the SHIFT key
     static uint8_t capsLockIsActive = 0;   // state of the Caps Lock key
     static uint8_t nextIsReleased = 0;     // indicating that the next key was released
@@ -47,19 +48,29 @@ void keyboard_press_service_routine()
         default:  // any other key
             if (!nextIsReleased)  // is it a 'key pressed' event?
             {
-                scanCode = ScancodeToASCII[shiftIsActive][scanCode & 127];
+                c = ScancodeToASCII[shiftIsActive][scanCode & 127];
 
-                if (capsLockIsActive && scanCode > 0x60 && scanCode < 0x7B) {
-                    scanCode -= 0x20;
+                if (capsLockIsActive && c > 0x60 && c < 0x7B) {
+                    c -= 0x20;
                 }
 
-                if (scanCode != 0x00) {
-                    terminal_writechar(scanCode, 15);          
+                if (c != 0x00) {
+                    putc(scanCode);          
                 }             
             }
             nextIsReleased = 0;
             break;
     }
 
+    outb(PIC1_COMMAND, PIC_EOI);
+}
+
+void no_int_service_routine()
+{
+    outb(PIC1_COMMAND, PIC_EOI);
+}
+
+void timer_service_routine()
+{
     outb(PIC1_COMMAND, PIC_EOI);
 }

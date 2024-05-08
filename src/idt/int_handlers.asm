@@ -50,5 +50,3 @@ no_int_handler:
     popad
     sti
     iret
-
-times 512-($ - $$) db 0

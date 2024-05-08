@@ -2,11 +2,12 @@
 #include <stddef.h>
 #include "kernel.h"
 #include "idt/idt.h"
+#include "hardware/pic/pic.h"
+#include "hardware/ps2/ps2.h"
 #include "io/vga/vga.h"
 
 void kernel_main()
 {
-    int i;
     terminal_initialize();
     print("Welcome!\n\n");
 
