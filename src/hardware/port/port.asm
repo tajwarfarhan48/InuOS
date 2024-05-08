@@ -7,6 +7,9 @@ global insw
 global outb
 global outw
 
+; uint8_t insb(uint16_t port);
+;
+; Reads a byte from the given port
 insb:
     push ebp
     mov ebp, esp
@@ -18,6 +21,9 @@ insb:
     pop ebp
     ret
 
+; uint16_t insw(uint16_t port);
+; 
+; Reads a word (16 bytes) from the given port
 insw:
     push ebp
     mov ebp, esp
@@ -29,6 +35,9 @@ insw:
     pop ebp
     ret
 
+; void outb(uint16_t port, uint8_t val);
+;
+; Writes the given byte to the given port
 outb:
     push ebp
     mov ebp, esp
@@ -42,6 +51,9 @@ outb:
     pop ebp
     ret
 
+; void outw(uint16_t port, uint16_t val);
+; 
+; Writes the given word (16 bytes) to the given port
 outw:
     push ebp
     mov ebp, esp

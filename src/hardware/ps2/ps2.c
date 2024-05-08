@@ -3,6 +3,9 @@
 #include "hardware/ps2/ps2.h"
 #include "io/vga/vga.h"
 
+/* 
+ * Initialises the PS2 controller 
+ */
 void initialise_ps2()
 {
 	uint8_t configurationByte, controllerTestResult, firstChannelTestResult, secondChannelTestResult;

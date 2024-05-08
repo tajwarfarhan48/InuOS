@@ -2,6 +2,22 @@
 #include "hardware/port/port.h"
 #include "hardware/pic/pic.h"
 
+/*
+ * Remap the interrupt numbers for the master and slave PICs.
+ *
+ * Reasoning: In Protected Mode, the interrupt numbers for the master 
+ *            PIC (0x08 - 0x0F) overlap with the reserved numbers for 
+ *            Intel (upto 0x1F). Hence, this function remaps the master
+ *            and slave PIC interrupt numbers from 0x20 to 0x2F (just
+ *            after the reserved range.) 
+ * 
+ *            However, in order to  to remap the PICs, we have to reset 
+ *            them, which is what this code does.
+ * 
+ * Input:
+ *     - uint8_t master_offset: Offset (starting IRQ) for master PIC 
+ *     - uint8_t slave_offset: Offset (starting IRQ) for slave PIC 
+ */
 void pic_remap(uint8_t master_offset, uint8_t slave_offset)
 {
     uint8_t master_mask, slave_mask;
