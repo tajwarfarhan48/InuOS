@@ -1,9 +1,10 @@
-ORG 0x7c00
-BITS 16
+ORG 0x7c00 ; This code will be loaded at physical address 0x7c00
+BITS 16 ; CPU starts out in 16-bit mode (Real Mode)
 
 CODE_SEG equ gdt_code - gdt_start
 DATA_SEG equ gdt_data - gdt_start
 
+; BIOS Parameter Block
 _start:
     jmp short start
     nop
@@ -14,14 +15,16 @@ start:
     jmp 0:step2
 
 step2:
-    cli ; Clear Interrupts
+    ; Set segment registers and stack for Real Mode
+    cli 
     mov ax, 0x00
     mov ds, ax
     mov es, ax
     mov ss, ax
     mov sp, 0x7c00
-    sti ; Enables Interrupts
+    sti
 
+; Switch CPU to protected mode
 .load_protected:
     cli
     lgdt[gdt_descriptor]
@@ -56,6 +59,7 @@ gdt_data:      ; DS, SS, ES, FS, GS
 
 gdt_end:
 
+; Size and starting physical address of GDT
 gdt_descriptor:
     dw gdt_end - gdt_start-1
     dd gdt_start
@@ -64,7 +68,7 @@ gdt_descriptor:
 load32:
     mov eax, 1
     mov ecx, 100
-    mov edi, 0x0100000
+    mov edi, 0x0100000 ; Load kernel image at physical address 0x100000
     call ata_lba_read
     jmp CODE_SEG:0x0100000
 
@@ -127,5 +131,5 @@ ata_lba_read:
     ; End of reading sectors into memory
     ret
 
-times 510-($ - $$) db 0
+times 510-($ - $$) db 0 ; Boot sector has to be exactly 512 bytes long
 dw 0xAA55
