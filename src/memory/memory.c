@@ -76,13 +76,13 @@ void kree(uint32_t addr) {
     uint32_t pfn;
 
     if (addr % PHY_PAGESIZE != 0) {
-        panic();
+        return;
     }
 
     pfn = phy_to_pfn(addr);
 
     if (!(phy_pages[pfn] & PHY_BLOCKSTART)) {
-        panic();
+        return;
     }
 
     phy_pages[pfn] &= ~PHY_BLOCKSTART;

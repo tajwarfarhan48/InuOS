@@ -20,7 +20,7 @@ struct idt_descriptor {
 }__attribute__((packed));
 
 void idt_init();
-extern void idt_load(struct idt_descriptor* idtr_addr);
+void idt_load(struct idt_descriptor* idtr_addr);
 void add_idt_entry(int interrupt_no, void* address);
 
 #endif
