@@ -11,7 +11,7 @@
 // Constants describing the size of physical memory
 #define PHY_PAGESIZE_BITS 12
 #define PHY_PAGESIZE 1 << PHY_PAGESIZE_BITS
-#define PHY_NUMPAGES 1 << 10
+#define PHY_NUMPAGES 1 << (32 - PHY_PAGESIZE_BITS)
 
 // Structure representing information about a page
 typedef uint8_t phy_pageinfo;

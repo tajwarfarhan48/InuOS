@@ -44,7 +44,7 @@ gdt_code:     ; CS SHOULD POINT TO THIS
     dw 0xffff ; Segment limit first 0-15 bits
     dw 0      ; Base first 0-15 bits
     db 0      ; Base 16-23 bits
-    db 0x9a   ; Access byte
+    db 0x9b   ; Access byte
     db 11001111b ; High 4 bit flags and the low 4 bit flags
     db 0        ; Base 24-31 bits
 
@@ -53,7 +53,7 @@ gdt_data:      ; DS, SS, ES, FS, GS
     dw 0xffff ; Segment limit first 0-15 bits
     dw 0      ; Base first 0-15 bits
     db 0      ; Base 16-23 bits
-    db 0x92   ; Access byte
+    db 0x93   ; Access byte
     db 11001111b ; High 4 bit flags and the low 4 bit flags
     db 0        ; Base 24-31 bits
 
